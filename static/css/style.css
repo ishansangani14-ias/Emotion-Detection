@@ -8,19 +8,12 @@
 }
 
 :root {
-    /* Multicolor gradient colors - DARK versions */
-    --color-red: #CC2F2F;
-    --color-orange: #D97326;
-    --color-yellow: #CCA82E;
-    --color-green: #4A9B5C;
-    
-    /* Gradient definitions */
-    --gradient-primary: linear-gradient(135deg, #CC2F2F 0%, #D97326 33%, #CCA82E 66%, #4A9B5C 100%);
-    --gradient-primary-reverse: linear-gradient(135deg, #4A9B5C 0%, #CCA82E 33%, #D97326 66%, #CC2F2F 100%);
-    --gradient-horizontal: linear-gradient(90deg, #CC2F2F 0%, #D97326 25%, #CCA82E 50%, #4A9B5C 75%, #CC2F2F 100%);
+    /* Orange color scheme */
+    --color-primary: #FF6B35;
+    --color-primary-dark: #E55A2A;
+    --color-primary-light: #FF8C5A;
     
     /* Base colors */
-    --color-primary: #D97326;
     --color-secondary: #2C2C2C;
     --color-accent: #4A4A4A;
     --color-background: #1A1A1A;
@@ -58,8 +51,7 @@ body {
 /* Header */
 .header {
     background: var(--color-surface);
-    border: 2px solid transparent;
-    border-image: var(--gradient-primary) 1;
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     padding: 30px;
     margin-bottom: 30px;
@@ -76,28 +68,11 @@ body {
 .title {
     font-size: 2.5rem;
     font-weight: 700;
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--color-primary);
     margin-bottom: 8px;
     display: flex;
     align-items: center;
     gap: 15px;
-    animation: gradientShift 3s ease infinite;
-}
-
-@keyframes gradientShift {
-    0%, 100% {
-        background: linear-gradient(135deg, #CC2F2F 0%, #D97326 33%, #CCA82E 66%, #4A9B5C 100%);
-        -webkit-background-clip: text;
-        background-clip: text;
-    }
-    50% {
-        background: linear-gradient(135deg, #4A9B5C 0%, #CCA82E 33%, #D97326 66%, #CC2F2F 100%);
-        -webkit-background-clip: text;
-        background-clip: text;
-    }
 }
 
 .emoji {
@@ -152,14 +127,10 @@ body {
 .panel-title {
     font-size: 1.5rem;
     font-weight: 600;
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--color-primary);
     margin-bottom: 20px;
     padding-bottom: 15px;
-    border-bottom: 3px solid transparent;
-    border-image: var(--gradient-primary) 1;
+    border-bottom: 2px solid var(--color-border);
 }
 
 /* Mode Selector */
@@ -188,15 +159,14 @@ body {
 
 .mode-btn:hover {
     background: var(--color-accent);
-    border-color: transparent;
-    border-image: var(--gradient-primary) 1;
+    border-color: var(--color-primary);
 }
 
 .mode-btn.active {
-    background: var(--gradient-primary);
-    border: none;
+    background: var(--color-primary);
+    border-color: var(--color-primary);
     color: #FFFFFF;
-    box-shadow: 0 4px 15px rgba(217, 115, 38, 0.4);
+    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
 }
 
 .mode-icon {
@@ -242,15 +212,14 @@ body {
 
 .toggle-btn:hover {
     background: var(--color-accent);
-    border: 2px solid transparent;
-    border-image: var(--gradient-primary) 1;
+    border-color: var(--color-primary);
 }
 
 .toggle-btn.active {
-    background: var(--gradient-primary);
-    border: none;
+    background: var(--color-primary);
+    border-color: var(--color-primary);
     color: #FFFFFF;
-    box-shadow: 0 4px 15px rgba(217, 115, 38, 0.4);
+    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
 }
 
 /* Upload Area */
@@ -302,42 +271,18 @@ body {
     margin-top: 20px;
     padding: 20px;
     background: var(--color-background);
-    border: 3px solid transparent;
+    border: 2px solid var(--color-primary);
     border-radius: var(--radius-md);
     text-align: center;
-    position: relative;
-    overflow: hidden;
-}
-
-.live-prediction::before {
-    content: '';
-    position: absolute;
-    top: -3px;
-    left: -3px;
-    right: -3px;
-    bottom: -3px;
-    background: var(--gradient-horizontal);
-    background-size: 200% 100%;
-    border-radius: var(--radius-md);
-    z-index: -1;
-    animation: borderGradient 3s linear infinite;
-}
-
-@keyframes borderGradient {
-    0% {
-        background-position: 0% 50%;
-    }
-    100% {
-        background-position: 200% 50%;
-    }
+    animation: pulse 2s infinite;
 }
 
 @keyframes pulse {
     0%, 100% {
-        transform: scale(1);
+        border-color: var(--color-primary);
     }
     50% {
-        transform: scale(1.02);
+        border-color: #FFA500;
     }
 }
 
@@ -364,15 +309,11 @@ body {
 .live-emotion {
     font-size: 2.5rem;
     font-weight: 700;
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--color-primary);
     text-transform: uppercase;
     margin-bottom: 10px;
-    text-shadow: 0 0 20px rgba(217, 115, 38, 0.5);
+    text-shadow: 0 0 20px rgba(255, 107, 53, 0.5);
     transition: all 0.3s ease;
-    animation: gradientPulse 2s ease infinite;
 }
 
 @keyframes gradientPulse {
@@ -452,16 +393,15 @@ body {
 }
 
 .btn-primary {
-    background: var(--gradient-primary);
+    background: var(--color-primary);
     color: #FFFFFF;
     width: 100%;
-    border: none;
-    box-shadow: 0 4px 15px rgba(217, 115, 38, 0.4);
+    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
 }
 
 .btn-primary:hover {
-    background: var(--gradient-primary-reverse);
-    box-shadow: 0 6px 20px rgba(217, 115, 38, 0.6);
+    background: var(--color-primary-dark);
+    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.6);
     transform: translateY(-2px);
 }
 
@@ -533,10 +473,7 @@ body {
 .result-emotion {
     font-size: 2.5rem;
     font-weight: 700;
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--color-primary);
     text-align: center;
     margin-bottom: 15px;
     text-transform: capitalize;
@@ -560,19 +497,8 @@ body {
 
 .confidence-fill {
     height: 100%;
-    background: var(--gradient-horizontal);
-    background-size: 200% 100%;
+    background: linear-gradient(90deg, var(--color-primary), #FFA500);
     transition: width 0.5s ease;
-    animation: gradientMove 3s linear infinite;
-}
-
-@keyframes gradientMove {
-    0% {
-        background-position: 0% 50%;
-    }
-    100% {
-        background-position: 200% 50%;
-    }
 }
 
 .result-details {
