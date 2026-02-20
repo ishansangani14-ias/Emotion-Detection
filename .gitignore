@@ -39,11 +39,11 @@ Thumbs.db
 *.log
 
 # Project specific
-emotion_detection_system/logs/*.log
-emotion_detection_system/uploads/*
-!emotion_detection_system/uploads/.gitkeep
-emotion_detection_system/data/incremental/*
-!emotion_detection_system/data/incremental/.gitkeep
+backend/.env
+frontend/.env
+*.log
+node_modules/
+.cache/
 
 # Large model files (optional - you may want to use Git LFS for these)
 # Uncomment if models are too large
