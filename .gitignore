@@ -1,0 +1,58 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+ENV/
+env/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+*.log
+
+# Project specific
+emotion_detection_system/logs/*.log
+emotion_detection_system/uploads/*
+!emotion_detection_system/uploads/.gitkeep
+emotion_detection_system/data/incremental/*
+!emotion_detection_system/data/incremental/.gitkeep
+
+# Large model files (optional - you may want to use Git LFS for these)
+# Uncomment if models are too large
+# *.h5
+# *.keras
+# *.pkl
+# *.joblib
+
+# Temporary files
+*.tmp
+*.bak
+*.swp

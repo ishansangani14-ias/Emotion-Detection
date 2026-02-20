@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adaptive Multimodal Emotion Detection System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">
+                    <span class="emoji">🎭</span>
+                    Emotion Detection System
+                </h1>
+                <p class="subtitle">Adaptive Multimodal AI with Reinforcement Learning</p>
+            </div>
+            <div class="header-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Predictions</span>
+                    <span class="stat-value" id="total-predictions">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Accuracy</span>
+                    <span class="stat-value" id="accuracy">0%</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Left Panel: Input -->
+            <div class="panel input-panel">
+                <h2 class="panel-title">Input</h2>
+                
+                <!-- Mode Selector -->
+                <div class="mode-selector">
+                    <button class="mode-btn active" data-mode="multimodal">
+                        <span class="mode-icon">🔄</span>
+                        Multimodal
+                    </button>
+                    <button class="mode-btn" data-mode="face">
+                        <span class="mode-icon">📷</span>
+                        Face Only
+                    </button>
+                    <button class="mode-btn" data-mode="text">
+                        <span class="mode-icon">💬</span>
+                        Text Only
+                    </button>
+                </div>
+
+                <!-- Image Upload -->
+                <div class="input-section" id="image-section">
+                    <label class="input-label">Upload Facial Image or Use Camera</label>
+                    
+                    <!-- Camera/Upload Toggle -->
+                    <div class="camera-toggle">
+                        <button class="toggle-btn active" id="upload-mode-btn">
+                            <span class="btn-icon">📁</span>
+                            Upload Image
+                        </button>
+                        <button class="toggle-btn" id="camera-mode-btn">
+                            <span class="btn-icon">📷</span>
+                            Live Camera
+                        </button>
+                    </div>
+                    
+                    <!-- Upload Area -->
+                    <div class="upload-area" id="upload-area">
+                        <input type="file" id="image-input" accept="image/*" hidden>
+                        <div class="upload-placeholder">
+                            <span class="upload-icon">📁</span>
+                            <p>Click or drag image here</p>
+                            <span class="upload-hint">PNG, JPG, JPEG, BMP (max 16MB)</span>
+                        </div>
+                        <img id="image-preview" class="image-preview" style="display: none;">
+                    </div>
+                    
+                    <!-- Camera Area -->
+                    <div class="camera-area" id="camera-area" style="display: none;">
+                        <video id="camera-video" class="camera-video" autoplay playsinline></video>
+                        <canvas id="camera-canvas" style="display: none;"></canvas>
+                        <div class="camera-controls">
+                            <button class="btn btn-secondary" id="start-camera-btn">
+                                <span class="btn-icon">📹</span>
+                                Start Live Detection
+                            </button>
+                            <button class="btn btn-secondary" id="stop-camera-btn" style="display: none;">
+                                <span class="btn-icon">⏹</span>
+                                Stop Camera
+                            </button>
+                        </div>
+                        <div class="live-prediction" id="live-prediction" style="display: none;">
+                            <div class="live-status">🔴 LIVE</div>
+                            <div class="live-emotion">Detecting...</div>
+                            <div class="live-confidence">Confidence: 0%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Text Input -->
+                <div class="input-section" id="text-section">
+                    <label class="input-label">Enter Text</label>
+                    <textarea 
+                        id="text-input" 
+                        class="text-input" 
+                        placeholder="Type your message here..."
+                        rows="4"
+                    ></textarea>
+                </div>
+
+                <!-- Predict Button -->
+                <button class="btn btn-primary" id="predict-btn">
+                    <span class="btn-icon">🔮</span>
+                    Predict Emotion
+                </button>
+            </div>
+
+            <!-- Right Panel: Results -->
+            <div class="panel results-panel">
+                <h2 class="panel-title">Results</h2>
+                
+                <div id="results-container" class="results-container">
+                    <div class="empty-state">
+                        <span class="empty-icon">🎯</span>
+                        <p>Make a prediction to see results</p>
+                    </div>
+                </div>
+
+                <!-- Feedback Section -->
+                <div id="feedback-section" class="feedback-section" style="display: none;">
+                    <h3 class="feedback-title">Was this prediction correct?</h3>
+                    <div class="feedback-buttons">
+                        <button class="btn btn-success" id="feedback-yes">
+                            <span class="btn-icon">✓</span>
+                            Yes
+                        </button>
+                        <button class="btn btn-error" id="feedback-no">
+                            <span class="btn-icon">✗</span>
+                            No
+                        </button>
+                    </div>
+                    <div id="correction-section" style="display: none;">
+                        <label class="input-label">Select correct emotion:</label>
+                        <select id="correct-emotion" class="emotion-select">
+                            {% for emotion in config.EMOTIONS %}
+                            <option value="{{ emotion }}">{{ emotion.capitalize() }}</option>
+                            {% endfor %}
+                        </select>
+                        <button class="btn btn-secondary" id="submit-correction">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Panel: Q-Table & Stats -->
+        <div class="bottom-panels">
+            <!-- Q-Table Visualization -->
+            <div class="panel qtable-panel">
+                <h2 class="panel-title">Q-Learning Agent</h2>
+                <div id="qtable-container" class="qtable-container">
+                    <div class="loading">Loading Q-table...</div>
+                </div>
+                <div class="qtable-info">
+                    <span>Epsilon: <strong id="epsilon-value">0.20</strong></span>
+                    <span>Episodes: <strong id="episodes-value">0</strong></span>
+                </div>
+            </div>
+
+            <!-- Statistics -->
+            <div class="panel stats-panel">
+                <h2 class="panel-title">Session Statistics</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-card-value" id="stat-face">0</div>
+                        <div class="stat-card-label">Face Only</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-value" id="stat-text">0</div>
+                        <div class="stat-card-label">Text Only</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-value" id="stat-fusion">0</div>
+                        <div class="stat-card-label">Fusion</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-value" id="stat-correct">0</div>
+                        <div class="stat-card-label">Correct</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay" style="display: none;">
+        <div class="spinner"></div>
+        <p>Processing...</p>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
